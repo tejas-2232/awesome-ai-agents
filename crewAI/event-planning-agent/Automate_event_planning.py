@@ -37,7 +37,7 @@ venue_coordinator = Agent(
     tools=[search_tool, scrape_tool],
     verbose= True,
     backstory=(
-        ""With a keen sense of space and "
+        "With a keen sense of space and "
         "understanding of event logistics,"
         "you excel at finding and securing"
         "the perfect venue that fits the event's theme,"
@@ -117,3 +117,42 @@ marketing_task = Task(
     agent = marketing_communications_agent
 )
 
+#creating the crew
+
+# set the inputs for the execution of the crew
+
+event_details = {
+    'event_topic': "Tech innovation conference",
+    'event_description': "A gathering of tech innovaters and industry leaders to explore future technologies.",
+    'event_city': "New York",
+    'tentative_date': "2025-10-10",
+    'expected_participants': 400,
+    'budget': "$50,000",
+    'venue_type': "Conference Center"
+}
+
+
+"""
+Note:
+
+Since you set human_input=True for some tasks, the execution will ask for your input before it finishes running.
+When it asks for feedback, use your mouse pointer to first click in the text box before typing anything.
+"""
+result = event_management_crew.kickoff(inputs=event_details)
+#view the result
+print(result)
+
+#display generated venue_details.json file
+
+import json
+from pprint import pprint
+
+with open('venue_details.json', 'r') as f:
+    data = json.load(f)
+
+pprint(data)
+
+# Note: wait for extra 45 seconds for the marketing_report.md file to be generated
+
+from IPython.display import Markdown, display
+Markdown("markdown_report.md")
