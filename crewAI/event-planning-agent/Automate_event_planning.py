@@ -70,3 +70,50 @@ marketing_communications_agent = Agent(
         "to maximize event exposure and participation."
     )
 )
+
+# create venue pydnatic object
+#create class VenueDetails using pydantic basemodel
+#  agents will populate this object with info about different venues by creating different instances of it
+
+from pydantic import BaseModelpip
+
+class VenueDetails(BaseModel):
+    name: str
+    address: str
+    capacity: int
+    booking_status: str
+
+# creating tasks
+#By using output_json -  you can specify the structure of the output you want from the agent
+#by using output_file - yuou can get your outpit in a file
+# by setting human_input= True - the task will ask for human feedback (whether you like the resulys or not ) before finalising it
+
+venue_task = Task(
+    description= "Find a venue in {event_city}"
+                "that meets criteria for {event_topic}."
+    expected_output= "All the details of a specifically chosen venue you found to accommodate the event",
+    human_input= True,
+    output_json= VenueDetails,
+    output_file="venue_details.json",
+    agent= venue_coordinator
+)
+
+
+# by setting "async_execution= True", it means task can run in pareller with the tasks which come after it
+
+logistics_task = Task(
+    description= "Coordinate catering and equipment for an event with {expected_participants} participants on {tentative_date}."
+    expected_output= "Confirmation of all logistics arrangements including catering and equipment setup",
+    human_input= True,
+    async_execution= True,
+    agent= logistics_manager
+)
+
+marketing_task = Task(
+    description= "Promote the {event_topic} aiming to engage at least {expected_participants} potential attendees."
+    expected_output = "Report on marketing activities and attendee ebgagement formatted as markdown.",
+    async_execution= True,
+    output_file= "marketing_report.md",
+    agent = marketing_communications_agent
+)
+
