@@ -1,5 +1,4 @@
-
-#How do multi agent collaborate?
+# How do multi agent collaborate?
 
 
 For Sequential processes; there are some consequences like
