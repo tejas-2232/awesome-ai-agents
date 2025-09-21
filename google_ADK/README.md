@@ -1,4 +1,6 @@
-## Overview: Benefits of Agent Development Kit
+# Get started with Agent Development Kit (ADK)
+
+### Overview: Benefits of Agent Development Kit
 
 Agent Development Kit offers several key advantages for developers building agentic applications:
 
@@ -13,3 +15,12 @@ Agent Development Kit offers several key advantages for developers building agen
 * Built-in Evaluation: Systematically assess agent performance by evaluating both the final response quality and the step-by-step execution trajectory against predefined test cases.
 
 * Deployment Ready: Containerize and deploy your agents anywhere – run locally, scale with Vertex AI Agent Engine, or integrate into custom infrastructure using Cloud Run or Docker.
+
+
+#### While other Gen AI SDKs or agent frameworks also allow you to query models and even empower them with tools, dynamic coordination between multiple models requires a significant amount of work on your end.
+
+#### Agent Development Kit offers a higher-level framework than these tools, allowing you to easily connect multiple agents to one another for complex but easy-to-maintain workflows.
+
+<img width="988" height="460" alt="image" src="https://github.com/user-attachments/assets/a39f22ea-3bec-4418-8e9f-2d58847332bf" />
+
+__Additionally, it allows you to deploy these complex systems of agents to a fully-managed endpoint in Agent Engine, so you can focus on the agents' logic while infrastructure is allocated and scaled for you__
