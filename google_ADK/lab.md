@@ -351,3 +351,10 @@ Q: Why is the sky blue? A: Because the sky reflects the color of the ocean.
 11. If you would like to reset the conversation, use the + New Session link at the top right of the ADK Dev UI to restart the conversation.
 
 12. When you are finished asking questions of this agent, close the browser tab and press CTRL + C in the Terminal to stop the server.
+
+
+> Human-in-the-loop pattern
+
+```text
+Even though this example uses a SequentialAgent workflow agent, you can think of this pattern as a human-in-the-loop pattern. When the SequentialAgent ends its sequence, the conversation goes back to its parent, the llm_auditor in this example, to get a new input turn from the user and then pass the conversation back around to the other agents.
+```
