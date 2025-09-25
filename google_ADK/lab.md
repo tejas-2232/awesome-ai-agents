@@ -285,3 +285,5 @@ what are some new movies that have been released in the past month in India?
 *   **Antha 7 Naatkal** Released on Sep 25 2025
 ```
 <hr>
+
+## Task 6. Preview a multi-agent example
