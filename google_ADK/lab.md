@@ -297,3 +297,57 @@ To explore this agent:
 1. To explore this multi-agent system's code, use the Cloud Shell Editor file explorer to navigate to the directory adk_project/llm_auditor.
 
 2. Within the llm_auditor directory, select the agent.py file.
+
+3. Here are a few things to notice about this multi-agent example:
+
+* Notice the import and use of the SequentialAgent class. This is an example of a workflow class which passes control of the conversation from one agent to the next in order without awaiting a user turn in-between. When you run the agent, you will see responses from both the critic_agent and the reviser_agent, in that order, without waiting for a user turn.
+
+* Notice that these sub-agents are each imported from their own directories within a sub_agents directory.
+
+* In the sub-agents' directories, you will see the __init__.py and agent.py files like those you explored in the directory structure earlier, along with a prompt.py file, which provides a dedicated place for a complete, well-structured prompt to be stored and edited before it is imported into the agent.py file.
+
+4. Create a .env file for this agent and launch the dev UI again by running the following in the Cloud Shell Terminal:
+
+```bash
+cd ~/adk_project
+cat << EOF > llm_auditor/.env
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=YOUR_GCP_PROJECT_ID
+GOOGLE_CLOUD_LOCATION=GCP_LOCATION
+MODEL=gemini-2.5-flash
+EOF
+
+```bash
+adk web
+```
+
+```
+Note: If you did not shut down your previous adk web session, the default port of 8000 will be blocked, but you can launch the Dev UI with a new port by using adk web --port 8001, for example.
+```
+
+5. Click the http://127.0.0.1:8000 link in the Terminal output. A new browser tab will open with the ADK Dev UI.
+
+6. From the Select an agent dropdown on the left, select llm_auditor.
+
+7. Start the conversation with the following false statement:
+
+```
+Double check this: Earth is further away from the Sun than Mars.
+```
+8. You should see two responses from the agent in the chat area:
+
+* First, a detailed response from the critic_agent checking the truthfulness of the statement based on fact-checking with Google Search.
+* Second, a short revised statement from the reviser_agent with a corrected version of your false input statement, for example, "Earth is closer to the Sun than Mars."
+
+9. Next to each response, click on the agent icon (agent_icon) to open the event panel for that response (or find the corresponding numbered event on the Events panel and select it). At the top of the event view, there is a graph that visualizes the relationships between the agents and tools in this multi-agent system. The agent responsible for this response will be highlighted.
+
+
+10. Feel free to explore the code further or ask for other fact-checking examples in the dev UI. Another example you can try is:
+
+```
+Q: Why is the sky blue? A: Because the sky reflects the color of the ocean.
+```
+
+11. If you would like to reset the conversation, use the + New Session link at the top right of the ADK Dev UI to restart the conversation.
+
+12. When you are finished asking questions of this agent, close the browser tab and press CTRL + C in the Terminal to stop the server.
