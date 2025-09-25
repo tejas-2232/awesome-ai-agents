@@ -254,3 +254,34 @@ __Selected Output:__
 
 <hr>
 
+## Task 5. Chat with an agent via the command-line interface
+
+You can also chat with an agent in your local development environment by using the command line interface. This can be very handy for quickly debugging and testing agents as you develop them.
+
+Like the web interface, the command line interface also handles the creation of the session service, artifact service, and runner for your agent.
+
+To run an interactive session using the command line interface:
+
+1. Run the following in Cloud Shell Terminal:
+
+```bash
+adk run my_google_search_agent
+```
+
+2. Input the following message:
+
+```text
+what are some new movies that have been released in the past month in India?
+```
+
+3. You will notice that the agent is able to use Google Search to get up-to-date information, rather than having its information stop on the date when its model was trained.
+
+```text
+[google_search_agent]: Here are some movies that have been released in India in the past month (August-September 2025):
+*   **Param Sundari** Released on 29 August 2025.
+*   **Ek Chatur Naar** Released on 12 September 2025.
+*   **Jolly LLB 3** Released on 19 September 2025.
+*   **Ajey: The Untold Story of a Yogi** Released on 19 September 2025.
+*   **Antha 7 Naatkal** Released on Sep 25 2025
+```
+<hr>
