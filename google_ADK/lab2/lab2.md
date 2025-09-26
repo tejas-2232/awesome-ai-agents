@@ -191,3 +191,16 @@ adk deploy cloud_run \
     illustration_agent
 ```
 
+9. You will be prompted to allow unauthenticated responses for this container. For the sake of lab testing, enter Y into the Cloud Shell Terminal (for "yes") and press return.
+
+> Note: Deployment should take about 5-10 minutes.
+> Note: If you encounter a PERMISSION_DENIED error, try running the above command again.
+
+#### Expected output:
+
+* You will see steps relating to building a Dockerfile and deploying the container, then deploying the service, followed by:
+
+```output
+Service [illustration-agent] revision [illustration-agent-00001-xpp] has been deployed and is serving 100 percent of traffic.
+Service URL: https://illustration-agent-Project Number.GCP_LOCATION.run.app
+```
