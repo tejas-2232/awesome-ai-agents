@@ -204,3 +204,68 @@ adk deploy cloud_run \
 Service [illustration-agent] revision [illustration-agent-00001-xpp] has been deployed and is serving 100 percent of traffic.
 Service URL: https://illustration-agent-Project Number.GCP_LOCATION.run.app
 ```
+
+
+## Task 4.  Enable another ADK agent to call this agent remotely
+
+In this task, you will provide a second ADK agent the ability to identify your illustration agent's capabilities and call it remotely.
+
+This second agent will be an agent tasked with creating contents for slides. It will write a headline and a couple of sentences of body text, then transfer to the illustration agent to generate an image to illustrate that text.
+
+
+1. In the Cloud Shell Terminal, run the following command to copy the Agent Card JSON file to your adk_and_a2a directory and change its name to indicate that it represents the illustration_agent.
+
+```bash
+cp illustration_agent/agent.json illustration-agent-card.json
+```
+
+2. In the Cloud Shell Editor's file explorer pane, navigate to the adk_and_a2a/slide_content_agent and open the agent.py file.
+
+Review this agent's instruction to see it will take a user's suggestion for a slide and write a headline & body text, then transfer to your A2A agent to illustrate the slide.
+
+3. Paste the following code under the # Agents header to add the remote agent using the RemoteA2aAgent class from ADK:
+
+```python
+illustration_agent = RemoteA2aAgent(
+    name="illustration_agent",
+    description="Agent that generates illustrations.",
+    agent_card=(
+        "illustration-agent-card.json"
+    ),
+)
+```
+
+4. Add the illustration_agent as a sub-agent of the root_agent by adding the following parameter to the root_agent:
+
+```python
+sub_agents=[illustration_agent]
+```
+
+5. Save the file.
+
+6. Launch the UI from the Cloud Shell Terminal with:
+
+```bash
+cd ~/adk_and_a2a
+adk web
+```
+
+7. Once again, click the http://127.0.0.1:8000 link in the Terminal output.
+
+8. A new browser tab will open with the ADK Dev UI. From the Select an agent dropdown on the left, select the slide_content_agent from the dropdown.
+
+9. Query the agent with an idea for a slide:
+
+```text
+Create content for a slide about our excellent on-the-job training.
+```
+
+You should see the following output: - a headline and body text written by the slide_content_agent itself - a call to transfer_to_agent, indicating a transfer to the illustration_agent - the response from the illustration_agent with a link you can click on to see the new image.
+
+<add image here>
+
+#### In this lab, you’ve:
+
+* Deployed an ADK agent as an A2A Server
+* Prepared a JSON Agent Card to describe an A2A agent's capabilities
+* Enabled another ADK agent to read the Agent Card of your deployed A2A agent and use it as a sub-agent
