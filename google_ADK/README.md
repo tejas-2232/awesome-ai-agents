@@ -1,5 +1,7 @@
 # Get started with Agent Development Kit (ADK)
 
+Refer lab.md file for the lab instructions.
+
 ### Overview: Benefits of Agent Development Kit
 
 Agent Development Kit offers several key advantages for developers building agentic applications:
