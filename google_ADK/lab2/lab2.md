@@ -64,3 +64,44 @@ MODEL="gemini-2.0-flash-001"
 IMAGE_MODEL="imagen-3.0-generate-002"
 EOF
 ```
+
+6. Run the following to copy the .env to another agent directory you'll use in this lab:
+
+```bash
+cp illustration_agent/.env slide_content_agent/.env
+```
+
+7. Now from the Cloud Shell Terminal, launch the ADK dev UI with:
+
+```bash
+adk web
+```
+
+* Output
+
+```output
+INFO:     Started server process [2434]
+INFO:     Waiting for application startup.
++-------------------------------------------------------+
+| ADK Web Server started                                |
+|                                                       |
+| For local testing, access at http://localhost:8000.   |
++-------------------------------------------------------+
+
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) 
+```
+
+8.To view the web interface in a new tab, click the http://127.0.0.1:8000 link at the bottom of the Terminal output.
+
+9. A new browser tab will open with the ADK Dev UI.
+
+10. From the Select an agent dropdown on the left, select the illustration_agent from the dropdown.
+
+11.Query the agent with some text that could be used in a recruitment slide deck:
+
+```text
+By supporting each other, we get big things done!
+```
+
+12. After about 10 seconds, the agent should respond with the prompt it generated and a URL to preview the image. Click the image URL to preview the image, then click Back in your browser to return to the Dev UI.
