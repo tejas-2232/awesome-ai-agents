@@ -11,7 +11,7 @@ Note: Using an Incognito browser window is recommended for most Qwiklabs to avoi
 
 ## Download and install the ADK and code samples for this lab
 
-Install ADK by running the following command in the Cloud Shell Terminal. Note: You will specify the version to ensure that the version of ADK that you install corresponds to the version used in this lab:
+* Install ADK by running the following command in the Cloud Shell Terminal. Note: You will specify the version to ensure that the version of ADK that you install corresponds to the version used in this lab:
 
 ```bash
 # Install ADK and the A2A Python SDK
@@ -20,4 +20,47 @@ export PATH=$PATH:"/home/${USER}/.local/bin"
 python3 -m pip install google-adk==1.8.0 a2a-sdk==0.2.16
 # Correcting a typo in this version
 sed -i 's/{a2a_option}"/{a2a_option} "/' ~/.local/lib/python3.12/site-packages/google/adk/cli/cli_deploy.py
+```
+
+* Paste the following commands into the Cloud Shell Terminal to copy lab code from a Cloud Storage bucket and unzip it:
+
+```bash
+gcloud storage cp gs://YOUR_GCP_PROJECT_ID-bucket/adk_and_a2a.zip ./adk_and_a2a.zip
+```
+
+```bash
+unzip adk_and_a2a.zip
+```
+
+##Task 2. Explore the ADK agent you will make available remotely
+
+* For the purposes of this lab, imagine you work for a stadium maintenance company: Cymbal Stadiums. As part of a recent project, you developed an image generation-agent that can create illustrations according to your brand guidelines. Now, several different teams in your organization want to use it too.
+
+* If you were to copy the code for use as a sub-agent by many agents, it would be very difficult to maintain and improve all of these copies.
+
+* Instead, you can deploy the agent once as an agent wrapped with an A2A server, and the other teams' agents can incorporate it by querying it remotely.
+
+1. In the Cloud Shell Editor's file explorer pane, navigate to the adk_and_a2a/illustration_agent directory. This directory contains the ADK agent you will make available remotely. Click the directory to toggle it open.
+
+2. Open the agent.py file on this directory and scroll to the section labeled # Tools.
+
+3. Notice the generate_image() function, which will be used as a tool by this agent. It receives a prompt as an argument, then uses the Google Gen AI SDK to generate_images(). This call includes an output_gcs_uri argument to store the generated image directly in Cloud Storage. The tool then returns the URL of the stored image.
+
+4. Notice that the instruction provided to the root_agent provides specific instructions to the agent to use image-generation prompts that respect the company's brand guidelines. For example, it specifies:
+
+* a specific illustration style: (Corporate Memphis)
+* a color palette (purples and greens on sunset gradients)
+* examples of stadium/sports and maintenance imagery because it is a stadium maintenance company
+
+5. To see it in action, you'll first need to write a .env file to set environment variables needed by ADK agents. Run the following in the Cloud Shell Terminal to write this file in this directory.
+
+```bash
+cd ~/adk_and_a2a
+cat << EOF > illustration_agent/.env
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=YOUR_GCP_PROJECT_ID
+GOOGLE_CLOUD_LOCATION=GCP_LOCATION
+MODEL="gemini-2.0-flash-001"
+IMAGE_MODEL="imagen-3.0-generate-002"
+EOF
 ```
