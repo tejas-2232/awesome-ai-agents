@@ -105,3 +105,24 @@ By supporting each other, we get big things done!
 ```
 
 12. After about 10 seconds, the agent should respond with the prompt it generated and a URL to preview the image. Click the image URL to preview the image, then click Back in your browser to return to the Dev UI.
+
+# Example output
+
+
+
+13. Notice that the prompt you provided to the agent didn't mention sports, stadiums, or maintenance work, but the agent took your text and the brand guidelines and combined them into a single prompt for the image generation model.
+
+* When you are finished exploring the base agent, close the browser tab.
+
+14. Click on the Cloud Shell Terminal pane and press CTRL + C to stop the server.
+
+
+##Task 3. Deploy agent as an A2A Server
+
+You'll now take the steps to deploy this agent as a remote A2A agent.
+
+1. An A2A Agent identifies itself and its capabilities by serving an Agent Card. Run the following to create an agent.json file.
+
+```bash
+touch illustration_agent/agent.json
+```
