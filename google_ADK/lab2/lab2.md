@@ -31,8 +31,9 @@ gcloud storage cp gs://YOUR_GCP_PROJECT_ID-bucket/adk_and_a2a.zip ./adk_and_a2a.
 ```bash
 unzip adk_and_a2a.zip
 ```
+<hr>
 
-##Task 2. Explore the ADK agent you will make available remotely
+## Task 2. Explore the ADK agent you will make available remotely
 
 * For the purposes of this lab, imagine you work for a stadium maintenance company: Cymbal Stadiums. As part of a recent project, you developed an image generation-agent that can create illustrations according to your brand guidelines. Now, several different teams in your organization want to use it too.
 
@@ -106,8 +107,13 @@ By supporting each other, we get big things done!
 
 12. After about 10 seconds, the agent should respond with the prompt it generated and a URL to preview the image. Click the image URL to preview the image, then click Back in your browser to return to the Dev UI.
 
-# Example output
+### Example output
 
+<img width="1094" height="944" alt="image" src="https://github.com/user-attachments/assets/33608ab4-a8f4-4a08-ad87-53e02352005b" />
+
+### Example Image
+
+<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/cda33f2b-ef56-4af7-8743-75f857e6524c" />
 
 
 13. Notice that the prompt you provided to the agent didn't mention sports, stadiums, or maintenance work, but the agent took your text and the brand guidelines and combined them into a single prompt for the image generation model.
@@ -116,8 +122,9 @@ By supporting each other, we get big things done!
 
 14. Click on the Cloud Shell Terminal pane and press CTRL + C to stop the server.
 
+<hr>
 
-##Task 3. Deploy agent as an A2A Server
+## Task 3. Deploy agent as an A2A Server
 
 You'll now take the steps to deploy this agent as a remote A2A agent.
 
@@ -204,7 +211,7 @@ adk deploy cloud_run \
 Service [illustration-agent] revision [illustration-agent-00001-xpp] has been deployed and is serving 100 percent of traffic.
 Service URL: https://illustration-agent-Project Number.GCP_LOCATION.run.app
 ```
-
+<hr>
 
 ## Task 4.  Enable another ADK agent to call this agent remotely
 
@@ -262,7 +269,9 @@ Create content for a slide about our excellent on-the-job training.
 
 You should see the following output: - a headline and body text written by the slide_content_agent itself - a call to transfer_to_agent, indicating a transfer to the illustration_agent - the response from the illustration_agent with a link you can click on to see the new image.
 
-<add image here>
+<img width="1770" height="1066" alt="image" src="https://github.com/user-attachments/assets/3a847e63-0a7a-44ab-890d-0afe5543a942" />
+
+<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/9d0284ca-4c03-4a44-a49b-920b027fb9ee" />
 
 #### In this lab, you’ve:
 
