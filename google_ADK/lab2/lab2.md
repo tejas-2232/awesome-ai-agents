@@ -157,3 +157,37 @@ The agent's url is constructed to be its Cloud Run service URL once you have dep
 
 While similar in name to skills, the parameter capabilities here is reserved to indicate abilities like streaming.
 
+5. Run the following to create a requirements.txt file in the illustration_agent directory.
+
+```bash
+touch illustration_agent/requirements.txt
+```
+6. Select the file, and paste the following into the file.
+
+```python
+google-adk==1.8.0
+a2a-sdk==0.2.16
+```
+7. Save the file.
+
+8. In the following command, you will use adk deploy cloud_run with the --a2a flag to deploy your agent to Cloud Run as an A2A server. You can learn more about deploying agents to Cloud Run by searching for the lab "Deploy ADK agents to Cloud Run". In this command:
+
+* the --project and --region define the project and region in which your Cloud Run service will be deployed
+* the --service_name defines the name for the Cloud Run service
+* the --a2a flag indicates it should be hosted as an A2A agent. This means two things:
+* your agent will be wrapped by a class which bridges ADK and A2A agents: the A2aAgent Executor. This class translates A2A Protocol's language of tasks and messages to an ADK Runner in its language of events.
+
+* the Agent Card will be hosted as well at CLOUD_RUN_URL/a2a/AGENT_NAME/.well-known/agent.json. Note: While this version of the card will be usable soon, the dynamic rewriting of the agent's url currently does not work with Cloud Run, so we won't use it in this version of this lab.
+
+Deploy the agent to Cloud Run as an A2A server with the following command:
+
+
+```bash
+adk deploy cloud_run \
+    --project YOUR_GCP_PROJECT_ID \
+    --region GCP_LOCATION \
+    --service_name illustration-agent \
+    --a2a \
+    illustration_agent
+```
+
