@@ -126,3 +126,34 @@ You'll now take the steps to deploy this agent as a remote A2A agent.
 ```bash
 touch illustration_agent/agent.json
 ```
+
+2. Open the agent.json file within the adk_and_a2a/illustration_agent directory and paste in the following contents:
+
+```json
+{
+    "name": "illustration_agent",
+    "description": "An agent designed to generate branded illustrations for Cymbal Stadiums.",
+    "defaultInputModes": ["text/plain"],
+    "defaultOutputModes": ["application/json"],
+    "skills": [
+    {
+        "id": "illustrate_text",
+        "name": "Illustrate Text",
+        "description": "Generate an illustration to illustrate the meaning of provided text.",
+        "tags": ["illustration", "image generation"]
+    }
+    ],
+    "url": "https://illustration-agent-Project Number.GCP_LOCATION.run.app/a2a/illustration_agent",
+    "capabilities": {},
+    "version": "1.0.0"
+}
+```
+
+3. Save the file.
+
+4. Review the JSON in the agent.json file. Notice that it gives the agent a name and description and identifies some skills . It also indicates a url where the agent itself can be called.
+
+The agent's url is constructed to be its Cloud Run service URL once you have deployed it following the instructions in this lab.
+
+While similar in name to skills, the parameter capabilities here is reserved to indicate abilities like streaming.
+
