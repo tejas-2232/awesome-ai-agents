@@ -19,3 +19,19 @@ After this lab, you will be able to:
 * Provide prebuilt Google, LangChain, or CrewAI tools to an agent
 * Discuss the importance of structured docstrings and typing when writing functions for agent tools
 * Write your own tool functions for an agent
+
+## Tool use with the Agent Developer Kit
+
+Leveraging tools effectively is what truly distinguishes intelligent agents from basic models. A tool is a block of code, like a function or a method, that executes specific actions such as interacting with databases, making API requests, or invoking other external services.
+
+Tools empower agents to interact with other systems and perform actions beyond their core reasoning and generation capabilities. It's crucial to note that these tools operate independently of the agent's LLM, meaning that tools do not automatically possess their own reasoning abilities.
+
+Agent Development Kit provides developers with a diverse range of tool options:
+
+1. Pre-built Tools: Ready-to-use functionalities such as Google Search, Code Execution, and Retrieval-Augmented Generation (RAG) tools.
+
+2. Third-Party Tools: Seamless integration of tools from external libraries like LangChain and CrewAI.
+
+3. Custom Tools: The ability to create custom tools tailored to specific requirements, by using language specific constructs and Agents-as-Tools. The SDK also provides asynchronous capabilities through Long Running Function Tools.
+
+In this lab, you will explore these categories and implement one of each type.
