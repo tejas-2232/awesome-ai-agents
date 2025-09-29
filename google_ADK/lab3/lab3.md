@@ -474,3 +474,20 @@ The PlanetCon: Persephone conference is scheduled for October 26th - 28th, 2028.
 10. Feel free to ask the agent more questions about this new planet and the conference where its discovery will be announced. When you are satisfied, close the dev UI tab.
 
 11. When you are finished asking questions of this agent, close the browser tab, select the Cloud Shell Terminal window where the server is running, and press __CTRL + C__ to stop the server.
+
+
+## Even more Types of Tools
+
+The following tool types are good for you to know about, but you will not implement them in this lab.
+
+## The LongRunningFunctionTool Class
+
+This tool is a subclass of FunctionTool. It's designed for tasks that require a significant amount of processing time that should be called without blocking the agent's execution.
+
+When using a __LongRunningFunctionTool__, your Python function can initiate the long-running operation and optionally return an intermediate result to keep the model and user informed about the progress (e.g., status updates or estimated completion time). The agent can then continue with other tasks.
+
+An example is a __human-in-the-loop__ scenario where the agent needs human approval before proceeding with a task.
+
+## Application Integration workflows as tools
+
+With [Application Integration](https://cloud.google.com/application-integration/docs/overview), you can use a drag-and-drop interface in the Google Cloud Console to build tools, data connections, and data transformations using __Integration Connector’s 100+ pre-built connectors__ for Google Cloud products and third-party systems like Salesforce, ServiceNow, JIRA, SAP, and more. You can then use an ADK ApplicationIntegrationToolset to [allow your agents to connect to those sources or call your workflows.](https://google.github.io/adk-docs/tools/google-cloud-tools/#application-integration-tools)
