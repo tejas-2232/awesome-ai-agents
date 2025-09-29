@@ -316,7 +316,7 @@ hello
 
 __Example Output:__
 
-<img width="1190" height="660" alt="image" src="https://github.com/user-attachments/assets/7123cc2d-5611-4cd8-a8f2-045a29d8104f" />
+<img width="1640" height="954" alt="image" src="https://github.com/user-attachments/assets/c0726e70-4b3f-4821-b8ec-b4be155e6743" />
 
 12. Notice that your agent shows buttons for your custom tool's request and the response. You can click on each to see more information about each of these events.
 
@@ -415,7 +415,6 @@ To see that in action:
     tools=[vertexai_search_tool, get_date]
 ```
 
-
 3. Save the file.
 
 4. In the ADK Dev UI, ask the agent:
@@ -424,8 +423,7 @@ To see that in action:
 What is today's date?
 ```
 __Expected output:__
-
-------------------------------
+<img width="1368" height="202" alt="image" src="https://github.com/user-attachments/assets/54a899bd-aa98-4a77-8a8b-734dec1b2169" />
 
 5. Back in the adk_tools/vertexai_search_tool_agent/agent.py file, paste the following code above your root_agent. This agent is dedicated to using the search tool and contains both the search tool and instructions to use it:
 
