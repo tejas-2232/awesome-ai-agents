@@ -197,3 +197,142 @@ __Output:__
 18. Select the Cloud Shell Terminal panel and press __CTRL + C__ to stop the server.
 
 <hr>
+
+# Task 4. Use a CrewAI Tool
+
+You can similarly use CrewAI Tools, using a CrewaiTool wrapper.
+
+1. To do so, using the Cloud Shell Editor file explorer, navigate to the directory __adk_tools/crewai_tool_agent.__
+
+2. Click on the __agent.py__ file in the __crewai_tool_agent__ directory.
+
+3. Notice the import of the __CrewaiTool__ class from ADK and the __ScrapeWebsiteTool__ from __crewai_tools__.
+
+4. Add the following code where indicated in the __agent.py__ file to add the __CrewAI Scrape Website__ tool to your agent, along with a name and description:
+
+```py
+    tools = [
+        CrewaiTool(
+            name="scrape_apnews",
+            description=(
+                """Scrapes the latest news content from
+                the Associated Press (AP) News website."""
+            ),
+            tool=ScrapeWebsiteTool("https://apnews.com/")
+        )
+    ]
+```
+
+* The __ScrapeWebsiteTool__ will load content from the Associated Press news website __apnews.com__.
+
+5. Save the file.
+
+6. You'll run this agent using the command line interface to be familiar with it as a convenient way to test an agent quickly. In the Cloud Shell Terminal, from the __adk_tools__ project directory, launch the agent with the ADK command line UI with:
+
+```bash
+adk run crewai_tool_agent
+```
+
+7. While the agent loads, it may display some warnings. You can ignore these. When you are presented the user: prompt, enter:
+
+```text
+Get 10 of the latest headlines from AP News.
+```
+
+Output:
+```terminal
+Using Tool: Read website content
+[crewai_tool_agent]: Here are the latest headlines from AP News:
+...
+```
+8. Notice that the command line interface also indicates to you when a tool is being used.
+
+9. In the Terminal, respond to the next user: prompt with _exit_ _to exit the command line interface_.
+
+10. Scroll back in your Terminal history to find where you ran __adk run crewai_tool_agent__, and notice that the command line interface provided you a log file to tail. Copy and run that command to view more details of the execution:
+
+```bash
+tail -F /tmp/agents_log/agent.latest.log
+```
+
+11. Press __CTRL + C__ to stop tailing the log file and return to the command prompt.
+
+<hr>
+
+# Task 5. Use a function as a custom tool
+
+* When pre-built tools don't fully meet specific requirements, you can create your own tools. This allows for tailored functionality, such as connecting to proprietary databases or implementing unique algorithms.
+
+* The most straightforward way to create a new tool is to write a standard Python function with a docstring written in a standard format and pass it to your model as a tool. This approach offers flexibility and quick integration.
+
+* When writing a function to be used as a tool, there are a few important things to keep in mind:
+
+* __Parameters:__ Your function can accept any number of parameters, each of which can be of any JSON-serializable type (e.g., string, integer, list, dictionary). It's important to avoid setting default values for parameters, as the large language model (LLM) does not currently support interpreting them.
+
+* __Return type:__ The preferred return type for a Python Function Tool is a dictionary. This allows you to structure the response with key-value pairs, providing context and clarity to the LLM. For example, instead of returning a numeric error code, return a dictionary with an "error_message" key containing a human-readable explanation. As a best practice, include a "status" key in your return dictionary to indicate the overall outcome (e.g., "success", "error", "pending"), providing the LLM with a clear signal about the operation's state.
+
+* __Docstring:__ The docstring of your function serves as the tool's description and is sent to the LLM. Therefore, a well-written and comprehensive docstring is crucial for the LLM to understand how to use the tool effectively. Clearly explain the purpose of the function, the meaning of its parameters, and the expected return values.
+
+
+> Define a function and use it as a tool by completing the following steps:
+
+1. Using the Cloud Shell Editor file explorer, navigate to the directory __adk_tools/function_tool_agent.__
+
+2. In the __function_tool_agent__ directory, click on the __agent.py__ file.
+
+3. Notice that the functions __get_date()__ and __write_journal_entry()__ have docstrings formatted properly for an ADK agent to know when and how to use them. They include:
+
+* A clear description of what each function does
+* an __Args:__ section describing the function's input parameters with JSON-serializable types
+* a __Returns:__ section describing what the function returns, with the preferred response type of a dict
+
+4. To pass the function to your agent to use as a tool, add the following code where indicated in the __agent.py__ file:
+
+```py
+    tools=[get_date, write_journal_entry]
+```
+
+5. Save the file.
+
+6. You will run this agent using the dev UI to see how its tools allow you to easily visualize tool requests and responses. In the Cloud Shell Terminal, from the __adk_tools__ project directory, run the dev UI again with the following command (if the server is still running from before, stop the running server first with __CTRL + C__, then run the following to start it again):
+
+```bash
+adk web
+```
+
+7. Click the __http://127.0.0.1:8000__ link in the Terminal output.
+
+8. A new browser tab will open with the __ADK Dev UI.__
+
+9. From the __Select an agent__ dropdown on the left, select the __function_tool_agent.__
+
+10. Start a conversation with the agent with:
+
+```text
+hello
+```
+
+11. The agent should prompt you about your day. _Respond with a sentence about how your day is going (like It's been a good day. I did a cool ADK lab.)_ and it will write a journal entry for you.
+
+__Example Output:__
+
+<img width="1190" height="660" alt="image" src="https://github.com/user-attachments/assets/7123cc2d-5611-4cd8-a8f2-045a29d8104f" />
+
+12. Notice that your agent shows buttons for your custom tool's request and the response. You can click on each to see more information about each of these events.
+
+13. Close the dev UI tab.
+
+14. In the Cloud Shell Editor, you can find your dated journal entry file in the __adk_tools__ directory. (You may want to use the Cloud Shell Editor's menu to enable View > Word Wrap to see the full text without lots of horizontal scrolling.)
+
+15. Stop the server, by clicking on the Cloud Shell Terminal panel and pressing __CTRL + C.__
+
+```text
+__Best practices for writing functions to be used as tools include__
+
+* __Fewer Parameters are Better:__ Minimize the number of parameters to reduce complexity.
+* __Use Simple Data Types:__ Favor primitive data types like str and int over custom classes when possible.
+* __Use Meaningful Names:__ The function's name and parameter names significantly influence how the LLM interprets and utilizes the tool. Choose names that clearly reflect the function's purpose and the meaning of its inputs.
+* __Break Down Complex Functions:__ Instead of a single update_profile(profile: Profile) function, create separate functions like update_name(name: str), update_age(age: int), etc.
+* __Return status:__ Include a "status" key in your return dictionary to indicate the overall outcome (e.g., "success", "error", "pending") to provide the LLM a clear signal about the operation's state.
+```
+<hr>
