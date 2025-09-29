@@ -400,3 +400,77 @@ Based on the "Persephone Survey: What we Know So Far" document, Persephone exhib
 ```
 
 <hr>
+
+## Using AgentTool to integrate search tools with other tools
+
+Search tools come with an implementation limitation in that you cannot mix search tools and non-search tools in the same agent. To get around this, you can wrap an agent with a search tool with an AgentTool, and then use that agent-as-a-tool to conduct searches alongside other tools.
+
+To see that in action:
+
+1. Ensure you have the __adk_tools/vertexai_search_tool_agent/agent.py__ file open.
+
+2. Update the __root_agent's__ tools parameter to include the __get_date__ function tool:
+
+```py
+    tools=[vertexai_search_tool, get_date]
+```
+
+
+3. Save the file.
+
+4. In the ADK Dev UI, ask the agent:
+
+```text
+What is today's date?
+```
+__Expected output:__
+
+------------------------------
+
+5. Back in the adk_tools/vertexai_search_tool_agent/agent.py file, paste the following code above your root_agent. This agent is dedicated to using the search tool and contains both the search tool and instructions to use it:
+
+```py
+vertexai_search_agent = Agent(
+    name="vertexai_search_agent",
+    model=os.getenv("MODEL"),
+    instruction="Use your search tool to look up facts.",
+    tools=[vertexai_search_tool]
+)
+```
+
+6. Then replace the root_agent's tools parameter with the following to wrap the agent created in the previous step with the AgentTool :
+
+```py
+    tools=[
+        AgentTool(vertexai_search_agent, skip_summarization=False),
+        get_date
+    ]
+```
+
+7. Now you can query your agent and receive both search results and use the __get_date()__ function.
+
+Back in the ADK Dev UI browser tab, click + New Session.
+
+8. Ask again:
+
+```text
+What is today's date?
+```
+
+The agent should respond with the correct date.
+
+9. Then to invoke the search tool, ask:
+
+```text
+When is the PlanetCon conference?
+```
+
+__Expected output:__
+
+```text
+The PlanetCon: Persephone conference is scheduled for October 26th - 28th, 2028.
+```
+
+10. Feel free to ask the agent more questions about this new planet and the conference where its discovery will be announced. When you are satisfied, close the dev UI tab.
+
+11. When you are finished asking questions of this agent, close the browser tab, select the Cloud Shell Terminal window where the server is running, and press __CTRL + C__ to stop the server.
