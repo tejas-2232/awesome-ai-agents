@@ -35,3 +35,17 @@ Agent Development Kit provides developers with a diverse range of tool options:
 3. Custom Tools: The ability to create custom tools tailored to specific requirements, by using language specific constructs and Agents-as-Tools. The SDK also provides asynchronous capabilities through Long Running Function Tools.
 
 In this lab, you will explore these categories and implement one of each type.
+
+
+## Available Pre-Built Tools from Google
+
+Google provides several useful tools for your agents. They include:
+
+__Google Search (google_search):__ Allows the agent to perform web searches using Google Search. You simply add google_search to the agent's tools.
+
+__Code Execution (built_in_code_execution):__ This tool allows the agent to execute code, to perform calculations, data manipulation, or interact with other systems programmatically. You can use the pre-built VertexCodeInterpreter or any code executor that implements the BaseCodeExecutor interface.
+
+__Retrieval (retrieval):__ A package of tools designed to fetch information from various sources.
+
+__Vertex AI Search Tool (VertexAiSearchTool):__ This tool integrates with Google Cloud's Vertex AI Search service to allow the agent to search through your AI Applications data stores.
+
