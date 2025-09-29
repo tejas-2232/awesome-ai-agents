@@ -489,3 +489,36 @@ An example is a __human-in-the-loop__ scenario where the agent needs human appro
 ## Application Integration workflows as tools
 
 With [Application Integration](https://cloud.google.com/application-integration/docs/overview), you can use a drag-and-drop interface in the Google Cloud Console to build tools, data connections, and data transformations using __Integration Connector’s 100+ pre-built connectors__ for Google Cloud products and third-party systems like Salesforce, ServiceNow, JIRA, SAP, and more. You can then use an ADK ApplicationIntegrationToolset to [allow your agents to connect to those sources or call your workflows.](https://google.github.io/adk-docs/tools/google-cloud-tools/#application-integration-tools)
+
+
+## Model Context Protocol (MCP) Tools
+
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) is an open standard designed to standardize how Large Language Models (LLMs) like Gemini and Claude communicate with external applications, data sources, and tools. ADK helps you both use and consume MCP tools in your agents, whether you're trying to build a tool to call an MCP service, or exposing an MCP server for other developers or agents to interact with your tools.
+
+>Refer to the [MCP Tools documentation](https://google.github.io/adk-docs/tools/mcp-tools/) for code samples and design patterns that help you use ADK together with MCP servers, including:
+
+
+* __Using Existing MCP Servers within ADK:__ An ADK agent can act as an MCP client and use tools provided by external MCP servers.
+
+* __Exposing ADK Tools via an MCP Server:__ How to build an MCP server that wraps ADK tools, making them accessible to any MCP client.
+
+For more information on using MCP with ADK agents, see the lab Use [Model Context Protocol (MCP) Tools with ADK Agents.](https://explore.qwiklabs.com/catalog_lab/32353)
+
+# Congratulations!
+
+In this lab, you’ve learned to:
+
+* Provide prebuilt Google, LangChain, or CrewAI tools to an agent
+
+* Write your own tool functions for an agent
+
+* Discuss the importance of structured docstrings and typing when writing functions for agent tools
+
+
+## Next Steps
+
+To learn more about building and deploying agents using Agent Development Kit, check out these labs:
+
+* [Build multi-agent systems with ADK](https://explore.qwiklabs.com/catalog_lab/32044)
+
+* [Deploy ADK agents to Agent Engine](https://explore.qwiklabs.com/catalog_lab/32019)
