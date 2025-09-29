@@ -156,8 +156,18 @@ cp langchain_tool_agent/.env vertexai_search_tool_agent/.env
 adk web
 ```
 __Output:__
+```terminal
+INFO:     Started server process [2434]
+INFO:     Waiting for application startup.
++-------------------------------------------------------+
+| ADK Web Server started                                |
+|                                                       |
+| For local testing, access at http://localhost:8000.   |
++-------------------------------------------------------+
 
---------------
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) 
+```
 
 9. To view the web interface in a new tab, click the http://127.0.0.1:8000 link in the Terminal output.
 
@@ -172,7 +182,7 @@ Who was Grace Hopper?
 ```
 __Output:__
 
---------------------------------
+<img width="1190" height="660" alt="image" src="https://github.com/user-attachments/assets/7123cc2d-5611-4cd8-a8f2-045a29d8104f" />
 
 13. Click the agent icon (agent_icon) next to the agent's chat bubble indicating the use of the wikipedia tool.
 
