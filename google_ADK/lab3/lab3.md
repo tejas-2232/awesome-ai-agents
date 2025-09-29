@@ -336,3 +336,67 @@ __Best practices for writing functions to be used as tools include__
 * __Return status:__ Include a "status" key in your return dictionary to indicate the overall outcome (e.g., "success", "error", "pending") to provide the LLM a clear signal about the operation's state.
 ```
 <hr>
+
+# Task 6. Use Vertex AI Search as a tool to ground on your own data
+
+* In this task, you will discover how easy it is to deploy a RAG application using an Agent Development Kit agent with the built-in Vertex AI Search tool from Google and the AI Applications data store you created earlier.
+
+1. Return to your __Cloud Shell Editor tab__ and select the __adk_tools/vertexai_search_tool_agent__ directory.
+
+2. Click on the __agent.py__ file in the __vertexai_search_tool_agent__ directory.
+
+3. Add an import of the __VertexAiSearchTool__ class where indicated at the bottom of the imports:
+
+```py
+from google.adk.tools import VertexAiSearchTool
+```
+
+4. Update the code where the __VertexAiSearchTool__ is instantiated. In the path being passed to __data_store_id__, update __YOUR_PROJECT_ID__ to __YOUR_GCP_PROJECT_ID__ and update __YOUR_SEARCH_APP_ID__ to the search app ID you copied in the earlier task.
+
+5.Add the following line where indicated in the agent definition to provide the agent the tool:
+
+```py
+    tools=[vertexai_search_tool]
+```
+
+6. Save the agents.py file.
+
+```text
+You can confirm your data store is ready for use by selecting the data store's name on the __AI Applications > Data Stores__ page in the console.
+
+The __ACTIVITY__ and __DOCUMENTS__ tabs provide statuses on the import and indexing of your documents. When the __ACTIVITY__ tab reports __"Import completed"__, your data store should be ready to query.
+```
+
+7. In the Cloud Shell Terminal, from the __adk_tools__ project directory, launch the command line interface with the following command. You'll include the __--reload_agents__ flag so that the Dev UI reloads your agent when you make changes.
+
+```bash
+adk web --reload_agents
+```
+
+```text
+Note: If you did not shut down your previous adk web session, select the Cloud Shell Terminal panel where it is running and press __CTRL + C__. If you can't find the Cloud Shell Terminal tab you used before, the default port of 8000 will be blocked, but you can launch the Dev UI with a new port by using __adk web --port 8001__.
+
+```
+
+8. Click the __http://127.0.0.1:8000__ to open the ADK Dev UI.
+
+
+9. From the __Select an agent__ dropdown on the left, select the __vertexai_search_tool_agent.__
+
+10. Query the agent about the fictional planet described in your Cloud Storage documents with:
+
+```text
+Is the new planet Persephone suitable for habitation?
+```
+
+__Example output (yours may be a little different)__
+
+```text
+Based on the "Persephone Survey: What we Know So Far" document, Persephone exhibits several characteristics that suggest it could be habitable:
+
+- Location: It orbits within the habitable zone of its star.
+- Temperature: The average surface temperature is estimated to be around 18°C (64°F).
+...
+```
+
+<hr>
