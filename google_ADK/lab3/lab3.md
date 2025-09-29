@@ -40,6 +40,7 @@ python3 -m pip install google-adk[extensions] -r adk_tools/requirements.txt
 
 > Note: google-adk[extensions] is used to install additional dependencies required for Crew AI tools.
 
+<hr>
 
 ## Task 2. Create a search app that will be used to ground responses on your own data
 
@@ -90,5 +91,99 @@ For a GCS path, enter YOUR_GCP_PROJECT_ID-bucket/planet-search-docs.
 21. __Copy the ID__ value of your app displayed in the Apps table. Save it in a text document as you will need it later.
 
 22. For now, you will give the data store some time to ingest its data. Later you will provide it to an agent to ground its responses.
+
+<hr>
+
+# Task 3. Use a LangChain Tool
+
+The LangChain community has created a large number of tool integrations to access many sources of data, integrate with various web products, and accomplish many things. Using community tools within ADK can save you rewriting a tool that someone has already created.
+
+1. Back in your browser tab displaying the Cloud Shell Editor, use the file explorer on the left-hand side to navigate to the directory __adk_tools/langchain_tool_agent__.
+
+2. Write a .env file to provide authentication details for this agent directory by running the following in the Cloud Shell Terminal:
+
+```bash
+cd ~/adk_tools
+```
+
+```bash
+cat << EOF > langchain_tool_agent/.env
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=YOUR_GCP_PROJECT_ID
+GOOGLE_CLOUD_LOCATION=GCP_LOCATION
+MODEL=gemini-2.5-flash
+EOF
+```
+
+3. Copy the .env file to the other agent directories you will use in this lab by running the following:
+
+```bash
+cp langchain_tool_agent/.env crewai_tool_agent/.env
+```
+
+```bash
+cp langchain_tool_agent/.env function_tool_agent/.env
+cp langchain_tool_agent/.env vertexai_search_tool_agent/.env
+```
+
+4. Click on the __agent.py__ file in the __langchain_tool_agent__ directory.
+
+5. Notice the import of the __LangchainTool__ class. This is a wrapper class that allows you to use LangChain tools within Agent Development Kit.
+
+6. Add the following code where indicated in the __agent.py__ file to add the __LangChain Wikipedia__ tool to your agent. This will allow your agent to search for information on Wikipedia:
+
+```py
+
+    tools = [
+        # Use the LangchainTool wrapper...
+        LangchainTool(
+            # to pass in a LangChain tool.
+            # In this case, the WikipediaQueryRun tool,
+            # which requires the WikipediaAPIWrapper as
+            # part of the tool.
+            tool=WikipediaQueryRun(
+              api_wrapper=WikipediaAPIWrapper()
+            )
+        )
+    ]
+```
+
+7. Save the file.
+
+8. In the Cloud Shell Terminal, from the adk_tools project directory, launch the Agent Development Kit Dev UI with the following commands:
+
+```bash
+adk web
+```
+__Output:__
+
+--------------
+
+9. To view the web interface in a new tab, click the http://127.0.0.1:8000 link in the Terminal output.
+
+10. A new browser tab will open with the ADK Dev UI.
+
+11. From the Select an agent dropdown on the left, select the langchain_tool_agent from the dropdown.
+
+12. Query the agent with:
+
+```text
+Who was Grace Hopper?
+```
+__Output:__
+
+--------------------------------
+
+13. Click the agent icon (agent_icon) next to the agent's chat bubble indicating the use of the wikipedia tool.
+
+14. Notice that the content includes a __functionCall__ with the query to Wikipedia.
+
+15. At the top of the tab, click the forward button to move to the next event.
+
+16. Exploring this event, you can see the result retrieved from __Wikipedia__ used to generate the model's response.
+
+17. When you are finished asking questions of this agent, close the dev UI browser tab.
+
+18. Select the Cloud Shell Terminal panel and press __CTRL + C__ to stop the server.
 
 <hr>
