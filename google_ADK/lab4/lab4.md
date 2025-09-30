@@ -454,7 +454,9 @@ This is beneficial for tasks that require continuous refinement, monitoring, or 
 
 You will add a LoopAgent to your movie pitch agent to allow multiple rounds of research and iteration while crafting the story. In addition to refining the script, this allows a user to start with a less specific input: instead of suggesting a specific historical figure, they might only know they want a story about an ancient doctor, and a research-and-writing iteration loop will allow the agents to find a good candidate, then work on the story.
 
-> add revised flow image here
+<img width="2112" height="960" alt="image" src="https://github.com/user-attachments/assets/62a9297b-cbf1-4de7-84a8-4b4ee05c18d0" />
+
+__Your revised agent will flow like this:__
 
 * The `root_agent` greeter will remain the same.
 
