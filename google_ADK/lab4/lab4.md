@@ -565,7 +565,7 @@ This is valuable for tasks that can be divided into independent sub-tasks that c
 
 In this lab, you will add some supplemental reports -- some research on potential box office performance and some initial ideas on casting -- to enhance the pitch for your new film.
 
-----add image here----
+<img width="2112" height="960" alt="image" src="https://github.com/user-attachments/assets/de01db85-cf2d-4ef3-a8d5-e396a0d4c66f" />
 
 __Your revised agent will flow like this:__
 
