@@ -36,3 +36,10 @@ This architectural approach offers several key advantages such as:
 ## The Hierarchical Agent Tree
 
 ![alt text](image.png)  
+
+__In Agent Development Kit, you organize your agents in a tree-like structure. This helps limit the options for transfers for each agent in the tree, making it easier to control and predict the possible routes the conversation can take through the tree. Benefits of the hierarchical structure include:__
+
+* It draws __inspiration from real-world collaborative teams,__ making it easier to design and reason about the behavior of the multi-agent system.
+* It is __intuitive for developers,__ as it mirrors common software development patterns.
+* It provides __greater control over the flow__ of information and task delegation within the system, making it easier to understand possible pathways and debug the system. For example, if a system has two report-generation agents at different parts of its flow with similar descriptions, the tree structure makes it easier to ensure that the correct one is invoked.
+* The structure always begins with the agent defined in the root_agent variable (although it may have a different user-facing name to identify itself). The root_agent may act as a parent to one or more sub-agents. Each sub-agent agent may have its own sub-agents.
