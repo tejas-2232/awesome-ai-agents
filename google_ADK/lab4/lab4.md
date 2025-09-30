@@ -191,3 +191,139 @@ user: actually I don't know what country to visit
 22. At the user prompt, type `exit` to end the session.
 
 <hr>
+<hr>
+
+# Task 3. Use session state to store and retrieve specific information
+Each conversation in ADK is contained within a Session that all agents involved in the conversation can access. A session includes the conversation history, which agents read as part of the context used to generate a response. The session also includes a `session state dictionary` that you can use to take greater control over the most important pieces of information you would like to highlight and how they are accessed.
+
+This can be particularly helpful to pass information between agents or to maintain a simple data structure, like a list of tasks, over the course of a conversation with a user.
+
+To explore adding to and reading from state:
+
+1. Return to the file `adk_multiagent_systems/parent_and_subagents/agent.py`
+
+2. Paste the following function definition after the `# Tools` header:
+
+```python
+def save_attractions_to_state(
+    tool_context: ToolContext,
+    attractions: List[str]
+) -> dict[str, str]:
+    """Saves the list of attractions to state["attractions"].
+
+    Args:
+        attractions [str]: a list of strings to add to the list of attractions
+
+    Returns:
+        None
+    """
+    # Load existing attractions from state. If none exist, start an empty list
+    existing_attractions = tool_context.state.get("attractions", [])
+
+    # Update the 'attractions' key with a combo of old and new lists.
+    # When the tool is run, ADK will create an event and make
+    # corresponding updates in the session's state.
+    tool_context.state["attractions"] = existing_attractions + attractions
+
+    # A best practice for tools is to return a status message in a return dict
+    return {"status": "success"}
+```
+
+3. In this code, notice:
+
+* The session is passed to your tool function as `ToolContext`. All you need to do is assign a parameter to receive it, as you see here with the parameter named `tool_context`. You can then use `tool_context` to access session information like conversation history (through `tool_context.events`) and the session state dictionary (through `tool_context.state`). When the `tool_context.state` dictionary is modified by your tool function, those changes will be reflected in the session's state after the tool finishes its execution.
+
+* The docstring provides a clear description and sections for argument and return values.
+
+* The commented function code demonstrates how easy it is to make updates to the state dictionary.
+
+4. Add the tool to the `attractions_planner` agent by adding the `tools` parameter when the agent is created:
+
+```python
+    tools=[save_attractions_to_state]
+```
+
+5. Add the following bullet points to the `attractions_planner` agent's existing instruction:
+
+```text
+        - When they reply, use your tool to save their selected attraction
+        and then provide more possible attractions.
+        - If they ask to view the list, provide a bulleted list of
+        { attractions? } and then suggest some more.
+```
+
+6. Notice the section in curly braces: `{ attractions? }`. This ADK feature, key templating, loads the value of the attractions key from the state dictionary. The question mark after the attractions key prevents this from erroring if the field is not yet present.
+
+7. You will now run the agent from the web interface, which provides a tab for you to see the changes being made to the session state. Launch the Agent Development Kit Web UI with the following command:
+
+```bash
+adk web
+```
+
+__Output:__
+
+```terminal
+INFO:     Started server process [2434]
+INFO:     Waiting for application startup.
++-------------------------------------------------------+
+| ADK Web Server started                                |
+|                                                       |
+| For local testing, access at http://localhost:8000.   |
++-------------------------------------------------------+
+
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit) 
+
+```
+
+8. To view the web interface in a new tab, click the http://127.0.0.1:8000 link in the Terminal output.
+
+9. A new browser tab will open with the ADK Dev UI.
+
+10. From the `Select an agent` dropdown on the left, select the `parent_and_subagents` agent from the dropdown.
+
+11. Start the conversation with: `hello`
+
+12. After the agent greets you, reply with:
+
+```text
+I'd like to go to Egypt.
+```
+
+You should be transferred to the `attractions_planner` and be provided a list of attractions.
+
+13.Choose an attraction, for example:
+
+```text
+I'll go to the Sphinx
+```
+
+14.You should receive an acknowledgement in the response, like: _Okay, I've saved The Sphinx to your list. Here are some other attractions..._
+
+15. Click the response tool box (marked with a check mark) to view the event created from the tool's response. Notice that it includes an `actions` field which includes `state_delta` describing the changes to the state.
+
+16. You should be prompted by the agent to select more attractions. Reply to the agent by __naming one of the options it has presented.__
+
+17. On the left-hand navigation menu, click the "X" to exit the focus on the event you inspected earlier.
+
+18. Now in the sidebar, you should see the list of events and a few tab options. Select the `State` tab. Here you can view the current state, including your attractions array with the two values you have requested.
+
+> here add parent and subagebnts output image
+
+
+19. Send this message to the agent:
+
+```text
+What is on my list?
+```
+
+20. It should return your list formatted as a bulleted list according to its `instruction`.
+
+21. When you are finished experimenting with the agent, close the web browser tab and press CTRL + C in the Cloud Shell Terminal to stop the server.
+
+Later in this lab, you will demonstrate how to use state to communicate between agents.
+
+<hr>
+
+# Workflow Agents
+
