@@ -453,3 +453,104 @@ This is beneficial for tasks that require continuous refinement, monitoring, or 
 * __Debate or Negotiation:__ Simulate iterative discussions between agents to reach a better outcome.
 
 You will add a LoopAgent to your movie pitch agent to allow multiple rounds of research and iteration while crafting the story. In addition to refining the script, this allows a user to start with a less specific input: instead of suggesting a specific historical figure, they might only know they want a story about an ancient doctor, and a research-and-writing iteration loop will allow the agents to find a good candidate, then work on the story.
+
+> add revised flow image here
+
+* The `root_agent` greeter will remain the same.
+
+* The `film_concept_team` SequentialAgent will now consist of:
+
+a. A `writers_room` LoopAgent that will begin the sequence. It will consist of:
+
+* The `researcher` will be the same as before.
+
+* The `screenwriter` will be similar to before.
+
+* A `critic` that will offer critical feedback on the current draft to motivate the next round of research and improvement through the loop.
+
+b. When the loop terminates, it will escalate control of the conversation back to the `film_concept_team` SequentialAgent, which will then pass control to the next agent in its sequence: the `file_writer` that will remain as before to give the movie a title and write the results of the sequence to a file.
+
+To make these changes:
+
+1. In the `adk_multiagent_systems/workflow_agents/agent.py` file, add this tool import so that you can provide an agent the ability to exit the loop when desired:
+
+```python
+from google.adk.tools import exit_loop
+```
+
+2. To determine when to exit the loop, add this `critic` agent to decide when the plot outline is ready. Paste the following new agent into the agent.py file under the `# Agents` section header (without overwriting the existing agents). Note that it has the exit_loop tool as one of its tools and instructions on when to use it:
+
+```python
+critic = Agent(
+    name="critic",
+    model=model_name,
+    description="Reviews the outline so that it can be improved.",
+    instruction="""
+    INSTRUCTIONS:
+    Consider these questions about the PLOT_OUTLINE:
+    - Does it meet a satisfying three-act cinematic structure?
+    - Do the characters' struggles seem engaging?
+    - Does it feel grounded in a real time period in history?
+    - Does it sufficiently incorporate historical details from the RESEARCH?
+
+    If the PLOT_OUTLINE does a good job with these questions, exit the writing loop with your 'exit_loop' tool.
+    If significant improvements can be made, use the 'append_to_state' tool to add your feedback to the field 'CRITICAL_FEEDBACK'.
+    Explain your decision and briefly summarize the feedback you have provided.
+
+    PLOT_OUTLINE:
+    { PLOT_OUTLINE? }
+
+    RESEARCH:
+    { research? }
+    """,
+    before_model_callback=log_query_to_model,
+    after_model_callback=log_model_response,
+    tools=[append_to_state, exit_loop]
+)
+```
+
+3. Create a new LoopAgent called `writers_room` that creates the iterative loop of the researcher, screenwriter, and critic. Each pass through the loop will end with a critical review of the work so far, which will prompt improvements for the next round. Paste the following above the existing film_concept_team SequentialAgent.
+
+```python
+writers_room = LoopAgent(
+    name="writers_room",
+    description="Iterates through research and writing to improve a movie plot outline.",
+    sub_agents=[
+        researcher,
+        screenwriter,
+        critic
+    ],
+    max_iterations=5,
+)
+```
+
+4. Note that the `LoopAgent` creation includes a parameter for `max_iterations`. This defines how many times the loop will run before it ends. Even if you plan to interrupt the loop via another method, it is a good idea to include a cap on the total number of iterations.
+
+5. Update the __film_concept_team__ `SequentialAgent` to replace the researcher and screenwriter with the __writers_room__ `LoopAgent` you just created. The `file_writer` agent should remain at the end of the sequence. The `film_concept_team` should now look like this:
+
+```python
+film_concept_team = SequentialAgent(
+    name="film_concept_team",
+    description="Write a film plot outline and save it as a text file.",
+    sub_agents=[
+        writers_room,
+        file_writer
+    ],
+)
+```
+
+6. Return to the ADK Dev UI tab and click the `+ New Session` button in the upper right to start a new session.
+
+7. Begin a new conversation with: `hello`
+
+8. When prompted to choose a kind of historical character, choose one that interests you. Some ideas include:
+
+* an industrial designer who made products for the masses
+* a cartographer (a map maker)
+* that guy who made crops yield more food
+
+9. Once you have chosen a type of character, the agent should work its way through iterations of the loop and finally give the film a title and write the outline to a file.
+
+10. Using the Cloud Shell Editor, review the file generated, which should be saved in the `adk_multiagent_systems/movie_pitches` directory. (Once again, you may need to use the Editor's menu to enable View > Word Wrap to see the full text without lots of horizontal scrolling.)
+
+<hr>
