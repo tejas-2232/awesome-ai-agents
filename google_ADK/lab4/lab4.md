@@ -371,21 +371,85 @@ A `root_agent` named `greeter` to welcome the user and request a historical char
 
 * A `SequentialAgent` called `film_concept_team` will include:
 
-1. A researcher to learn more about the requested historical figure from Wikipedia, using a LangChain tool covered in the lab Empower ADK agents with tools. An agent can choose to call its tool(s) multiple times in succession, so the researcher can take multiple turns in a row if it determines it needs to do more research.
+a. A `researcher` to learn more about the requested historical figure from Wikipedia, using a LangChain tool covered in the lab Empower ADK agents with tools. An agent can choose to call its tool(s) multiple times in succession, so the researcher can take multiple turns in a row if it determines it needs to do more research.
 
-2. A screenwriter to turn the research into a plot outline.
+b. A `screenwriter` to turn the research into a plot outline.
 
-3. A `file_writer` to title the resulting movie and write the results of the sequence to a file.
+c. A `file_writer`  to title the resulting movie and write the results of the sequence to a file.
+
+1. In the Cloud Shell Editor, navigate to the directory `adk_multiagent_systems/workflow_agents`.
+
+2. Click on the `agent.py` file in the `workflow_agents` directory.
+
+3. Read through this agent definition file. Because sub-agents must be defined before they can be assigned to a parent, to read the file in the order of the conversational flow, you can read the agents from the bottom of the file to the top.
+
+4. You also have a function tool `append_to_state`. This function allows agents with the tool the ability to add content to a dictionary value in state. It is particularly useful for agents that might call a tool multiple times or act in multiple passes of a LoopAgent, so that each time they act their output is stored.
+
+5. Try out the current version of the agent by launching the web interface from the Cloud Shell Terminal. You will use the --reload_agents argument to enable live reloading of agents based on agent changes:
+
+```bash
+cd ~/adk_multiagent_systems
+adk web --reload_agents
+```
+
+```text
+Note: If you did not shut down your previous adk web session, the default port of 8000 will be blocked, but you can launch the Dev UI with a new port by using adk web --port 8001, for example.
+```
+
+6. To view the web interface in a new tab, click the http://127.0.0.1:8000 link in the Terminal output.
+
+7. A new browser tab will open with the ADK Dev UI.
+
+8. From the Select an agent dropdown on the left, select workflow_agents.
+
+9. Start the conversation with: hello. It may take a few moments for the agent to respond, but it should request you enter a historical figure to start your film plot generation.
+
+10. When prompted to enter a historical figure, you can enter one of your choice or use one of these examples:
+
+```text
+Zhang Zhongjing - a renowned Chinese physician from the 2nd Century CE.
+```
+
+```text
+Ada Lovelace - an English mathematician and writer known for her work on early computers
+```
+
+```text
+Marcus Aurelius - a Roman emperor known for his philosophical writings.
+```
+
+11. The agent should now call its agents one after the other as it executes the workflow and writes the plot outline file to your `~/adk_multiagent_systems/movie_pitches` directory. It should inform you when it has written the file to disk.
 
 
+If you don't see the agent reporting that it generated a file for you or want to try another character, you can click + New Session in the upper right and try again.
 
+12. View the agent's output in the Cloud Shell Editor. (You may need to use the Cloud Shell Editor's menu to enable View > Word Wrap to see the full text without lots of horizontal scrolling.)
 
-
-
-
-
-
+13. In the ADK Dev UI, click on one of the agent icons (agent_icon) representing a turn of conversation to bring up the event view.
 
 14. The event view provides a visual representation of the tree of agents and tools used in this session. You may need to scroll in the event panel to see the full plot.
 
 <img width="1114" height="362" alt="image" src="https://github.com/user-attachments/assets/cf4714f2-c557-4fc5-989a-cb9f9cd3de4c" />
+
+
+15. In addition to the graph view, you can click on the Request tab of the event to see the information this agent received as part of its request, including the conversation history.
+
+16. You can also click on the Response tab of the event to see what the agent returned.
+
+> Note: While this system can produce interesting results, it is not intended to imply that instructions can be so brief or adding examples can be skipped. The system's reliability would benefit greatly from the additional layer of adding more rigorous instructions and examples for each agent.
+
+<hr>
+
+# Task 5. Add a LoopAgent for iterative work
+
+The `LoopAgent` executes its sub-agents in a defined sequence and then starts at the beginning of the sequence again without breaking for a user input. It repeats the loop until a number of iterations has been reached or a call to exit the loop has been made by one of its sub-agents (usually by calling a built-in exit_loop tool).
+
+This is beneficial for tasks that require continuous refinement, monitoring, or cyclical workflows. Examples include:
+
+* __Iterative Refinement:__ Continuously improve a document or plan through repeated agent cycles.
+
+* __Continuous Monitoring:__ Periodically check data sources or conditions using a sequence of agents.
+
+* __Debate or Negotiation:__ Simulate iterative discussions between agents to reach a better outcome.
+
+You will add a LoopAgent to your movie pitch agent to allow multiple rounds of research and iteration while crafting the story. In addition to refining the script, this allows a user to start with a less specific input: instead of suggesting a specific historical figure, they might only know they want a story about an ancient doctor, and a research-and-writing iteration loop will allow the agents to find a good candidate, then work on the story.
