@@ -34,3 +34,5 @@ This architectural approach offers several key advantages such as:
 * __Modularity:__ Distinct agents from one workflow can be easily copied and included in other similar workflows.
 
 ## The Hierarchical Agent Tree
+
+![alt text](image.png)  
