@@ -556,3 +556,150 @@ film_concept_team = SequentialAgent(
 10. Using the Cloud Shell Editor, review the file generated, which should be saved in the `adk_multiagent_systems/movie_pitches` directory. (Once again, you may need to use the Editor's menu to enable View > Word Wrap to see the full text without lots of horizontal scrolling.)
 
 <hr>
+
+# Task 6. Use a "fan out and gather" pattern for report generation with a ParallelAgent
+
+The `ParallelAgent` enables concurrent execution of its sub-agents. Each sub-agent operates in its own branch, and by default, they do not share conversation history or state directly with each other during parallel execution.
+
+This is valuable for tasks that can be divided into independent sub-tasks that can be processed simultaneously. Using a `ParallelAgent` can significantly reduce the overall execution time for such tasks.
+
+In this lab, you will add some supplemental reports -- some research on potential box office performance and some initial ideas on casting -- to enhance the pitch for your new film.
+
+----add image here----
+
+__Your revised agent will flow like this:__
+
+* The `greeter` will the same.
+
+* The `film_concept_team` SequentialAgent will now consist of:
+    
+    a. The `writers_room` LoopAgent, which will remain the same including:
+    
+    * The `researcher` agent
+    * The `screenwriter` agent
+    * The `critic` agent
+
+    b. Your new `preproduction_team` ParallelAgent will then act, consisting of:
+
+    * The `box_office_researcher` agent
+    * The `casting_agent` agent
+
+    c. The `file_writer` agent will remain as before to write the results of the sequence to a file.
+
+> While much of this example demonstrates creative work that would be done by human teams, this workflow represents how a complex chain of tasks can be broken across several sub-agents to produce drafts of complex documents which human team members can then edit and improve upon.
+
+
+1. Paste the following new agents and ParallelAgent into your workflow_agents/agent.py file under the # Agents header:
+
+```python
+box_office_researcher = Agent(
+    name="box_office_researcher",
+    model=model_name,
+    description="Considers the box office potential of this film",
+    instruction="""
+    PLOT_OUTLINE:
+    { PLOT_OUTLINE? }
+
+    INSTRUCTIONS:
+    Write a report on the box office potential of a movie like that described in PLOT_OUTLINE based on the reported box office performance of other recent films.
+    """,
+    output_key="box_office_report"
+)
+
+casting_agent = Agent(
+    name="casting_agent",
+    model=model_name,
+    description="Generates casting ideas for this film",
+    instruction="""
+    PLOT_OUTLINE:
+    { PLOT_OUTLINE? }
+
+    INSTRUCTIONS:
+    Generate ideas for casting for the characters described in PLOT_OUTLINE
+    by suggesting actors who have received positive feedback from critics and/or
+    fans when they have played similar roles.
+    """,
+    output_key="casting_report"
+)
+
+preproduction_team = ParallelAgent(
+    name="preproduction_team",
+    sub_agents=[
+        box_office_researcher,
+        casting_agent
+    ]
+)
+```
+
+2. Update the existing `film_concept_team` agent's sub_agents list to include the `preproduction_team` between the `writers_room` and `file_writer`:
+
+```python
+film_concept_team = SequentialAgent(
+    name="film_concept_team",
+    description="Write a film plot outline and save it as a text file.",
+    sub_agents=[
+        writers_room,
+        preproduction_team,
+        file_writer
+    ],
+)
+```
+
+3. Update the existing `file_writer` agent's instruction to:
+
+```python
+Update the file_writer's instruction to:
+
+    INSTRUCTIONS:
+    - Create a marketable, contemporary movie title suggestion for the movie described in the PLOT_OUTLINE. If a title has been suggested in PLOT_OUTLINE, you can use it, or replace it with a better one.
+    - Use your 'write_file' tool to create a new txt file with the following arguments:
+        - for a filename, use the movie title
+        - Write to the 'movie_pitches' directory.
+        - For the 'content' to write, include:
+            - The PLOT_OUTLINE
+            - The BOX_OFFICE_REPORT
+            - The CASTING_REPORT
+
+    PLOT_OUTLINE:
+    { PLOT_OUTLINE? }
+
+    BOX_OFFICE_REPORT:
+    { box_office_report? }
+
+    CASTING_REPORT:
+    { casting_report? }
+```
+
+4. Save the file.
+
+5. In the ADK Dev UI, click + New Session in the upper right.
+
+6. Enter hello to start the conversation.
+
+7. When prompted, enter a new character idea that you are interested in. Some ideas include:
+
+* that actress who invented the technology for wifi
+* an exciting chef
+* key players in the worlds fair exhibitions
+
+8. When the agent has completed its writing and report-generation, inspect the file it produced in the adk_multiagent_systems/movie_pitches directory. If a part of the process fails, click + New session in the upper right and try again.
+
+<hr>
+
+# Custom workflow agents
+
+* When the pre-defined workflow agents of `SequentialAgent`, `LoopAgent`, and `ParallelAgent` are insufficient for your needs, `CustomAgent` provides the flexibility to implement new workflow logic. 
+
+* You can define patterns for flow control, conditional execution, or state management between sub-agents. This is useful for complex workflows, stateful orchestrations, or integrating custom business logic into the framework's orchestration layer.
+
+* Creation of a `CustomAgent` is out of the scope of this lab, but it is good to know that it exists if you need it!
+
+## Congratulations!
+
+* In this lab, you’ve learned to:
+
+* Create multiple agents and relate them to one another with parent to sub-agent relationships
+
+* Add to the session state and read it in agent instructions
+
+* Use workflow agents to pass the conversation between agents directly
