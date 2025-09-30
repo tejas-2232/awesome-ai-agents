@@ -326,22 +326,28 @@ Later in this lab, you will demonstrate how to use state to communicate between 
 
 # Workflow Agents
 
-Parent to sub-agent transfers are ideal when you have multiple specialist sub-agents, and you want the user to interact with each of them.
+`Parent to sub-agent` transfers are ideal when you have multiple specialist sub-agents, and you want the user to interact with each of them.
 
-However, if you would like agents to act one-after-another without waiting for a turn from the user, you can use workflow agents. Some example scenarios when you might use workflow agents include when you would like your agents to:
+However, if you would like agents to act one-after-another without waiting for a turn from the user, you can use `workflow agents`. Some example scenarios when you might use workflow agents include when you would like your agents to:
 
-Plan and Execute: When you want to have one agent prepare a list of items, and then have other agents use that list to perform follow-up tasks, for example writing sections of a document
-Research and Write: When you want to have one agent call functions to collect contextual information from Google Search or other data sources, then another agent use that information to produce some output.
-Draft and Revise: When you want to have one agent prepare a draft of a document, and then have other agents check the work and iterate on it
+* __Plan and Execute:__ When you want to have one agent prepare a list of items, and then have other agents use that list to perform follow-up tasks, for example writing sections of a document
 
-To accomplish these kinds of tasks, workflow agents have sub-agents and guarantee that each of their sub-agents acts. Agent Development Kit provides three built-in workflow agents and the opportunity to define your own:
+* __Research and Write:__ When you want to have one agent call functions to collect contextual information from Google Search or other data sources, then another agent use that information to produce some output.
 
-SequentialAgent
-LoopAgent
-ParallelAgent
-Throughout the rest of this lab, you will build a multi-agent system that uses multiple LLM agents, workflow agents, and tools to help control the flow of the agent.
+* __Draft and Revise:__ When you want to have one agent prepare a draft of a document, and then have other agents check the work and iterate on it
 
-Specifically, you will build an agent that will develop a pitch document for a new hit movie: a biographical film based on the life of a historical character. Your sub-agents will handle the research, an iterative writing loop with a screenwriter and a critic, and finally some additional sub-agents will help brainstorm casting ideas and use historical box office data to make some predictions about box office results.
+To accomplish these kinds of tasks, _workflow agents_ have sub-agents and guarantee that each of their sub-agents acts. Agent Development Kit provides three built-in workflow agents and the opportunity to define your own:
+
+* __SequentialAgent:__
+* __LoopAgent:__
+* __ParallelAgent:__
+
+
+* Throughout the rest of this lab, you will build a multi-agent system that uses multiple LLM agents, workflow agents, and tools to help control the flow of the agent.
+
+* Specifically, you will build an agent that will develop a pitch document for a new hit movie: a biographical film based on the life of a historical character.
+
+* Your `sub-agents` will handle the research, an iterative writing loop with a screenwriter and a critic, and finally some additional sub-agents will help brainstorm casting ideas and use historical box office data to make some predictions about box office results.
 
 In the end, your multi-agent system will look like this (you can click on the image to see it larger):
 
@@ -349,17 +355,35 @@ In the end, your multi-agent system will look like this (you can click on the im
 
 But you will begin with a simpler version.
 
+<hr>
+
 # Task 4. Begin building a multi-agent system with a SequentialAgent
 
-The SequentialAgent executes its sub-agents in a linear sequence. Each sub-agent in its sub_agents list is run, one after the other, in the order they are defined.
+The `SequentialAgent` executes its sub-agents in a linear sequence. Each sub-agent in its sub_agents list is run, one after the other, in the order they are defined.
 
 This is ideal for workflows where tasks must be performed in a specific order, and the output of one task serves as the input for the next.
 
-In this task, you will run a SequentialAgent to build a first version of your movie pitch-development multi-agent system. The first draft of your agent will be structured like this:
+In this task, you will run a `SequentialAgent` to build a first version of your movie pitch-development multi-agent system. The first draft of your agent will be structured like this:
 
 <img width="2112" height="960" alt="image" src="https://github.com/user-attachments/assets/39851a46-200c-451f-b0de-1278092b04a3" />
 
-A root_agent named greeter to welcome the user and request a historical character as a movie subject
+A `root_agent` named `greeter` to welcome the user and request a historical character as a movie subject
+
+* A `SequentialAgent` called `film_concept_team` will include:
+
+1. A researcher to learn more about the requested historical figure from Wikipedia, using a LangChain tool covered in the lab Empower ADK agents with tools. An agent can choose to call its tool(s) multiple times in succession, so the researcher can take multiple turns in a row if it determines it needs to do more research.
+
+2. A screenwriter to turn the research into a plot outline.
+
+3. A `file_writer` to title the resulting movie and write the results of the sequence to a file.
+
+
+
+
+
+
+
+
 
 
 14. The event view provides a visual representation of the tree of agents and tools used in this session. You may need to scroll in the event panel to see the full plot.
