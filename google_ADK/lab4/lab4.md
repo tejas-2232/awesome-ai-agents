@@ -551,6 +551,10 @@ film_concept_team = SequentialAgent(
 * a cartographer (a map maker)
 * that guy who made crops yield more food
 
+__Output: One of the states, looks like this:__
+
+<img width="930" height="552" alt="image" src="https://github.com/user-attachments/assets/6a7657d5-80fa-4ff8-99d2-53c18063457b" />
+
 9. Once you have chosen a type of character, the agent should work its way through iterations of the loop and finally give the film a title and write the outline to a file.
 
 10. Using the Cloud Shell Editor, review the file generated, which should be saved in the `adk_multiagent_systems/movie_pitches` directory. (Once again, you may need to use the Editor's menu to enable View > Word Wrap to see the full text without lots of horizontal scrolling.)
