@@ -1,0 +1,18 @@
+Logline: Born into a world of rigid expectations, a brilliant mathematician and poet's daughter defies the limitations of her era to envision a future where machines can compose music and create art, becoming the world's first computer programmer and a prophet of the digital age.
+
+Three-Act Plot Outline:
+
+Act 1: The Poetical Scientist
+    - Young Ada Byron, daughter of the infamous Lord Byron, is raised by her mother with a strict focus on logic and mathematics, a deliberate attempt to suppress any "poetical madness." Despite this, Ada possesses a unique blend of analytical rigor and imaginative insight, which she calls "poetical science."
+    - She struggles with the societal constraints placed upon women of her time, who are expected to marry and manage a household rather than pursue intellectual endeavors.
+    - Ada is introduced to the eccentric inventor Charles Babbage and his groundbreaking, yet unfinished, Analytical Engine. She is immediately captivated, seeing beyond its mechanical gears to its profound potential. A deep intellectual friendship and collaboration begin.
+
+Act 2: The Visionary's Code
+    - Ada immerses herself in Babbage's work, translating an article about the Analytical Engine. However, she doesn't just translate; she expands, adding extensive notes that reveal her revolutionary understanding.
+    - While Babbage sees the machine primarily as a calculator, Ada envisions it as a manipulator of symbols, capable of processing anything that can be expressed in numbers – including music, art, and complex logic. She develops the first algorithm intended for processing by a machine, a method for calculating Bernoulli numbers, effectively writing the world's first computer program.
+    - She faces skepticism and resistance from contemporaries who cannot grasp her futuristic concepts. Financial difficulties and her own recurring health issues add to the challenges, as she strives to balance her intellectual pursuits with her family life and societal duties.
+
+Act 3: A Legacy Unseen
+    - Ada completes and publishes her groundbreaking notes, using only her initials to avoid gender bias. Her work, though profound, is largely misunderstood and unappreciated in her lifetime, as Babbage's Analytical Engine remains an unbuilt dream.
+    - Despite the lack of immediate recognition, Ada holds firm in her conviction about the future impact of her ideas. She grapples with the frustration of her vision being ahead of its time but finds solace in the certainty of its eventual realization.
+    - Her untimely death leaves her work as a testament to her genius. The film concludes with a montage or epilogue showcasing the eventual development of modern computers and the posthumous recognition of Ada Lovelace as the pioneering visionary who first saw the true potential of computing, solidifying her legacy as the first computer programmer and a prophet of the digital age.
