@@ -383,21 +383,197 @@ app = Flask(__name__)
 # Generate an app route to display a list of inventory items in the JSON format from the inventory.py file.
 # Use the GET method.
 ```
-Select the comment lines, including the blank line below the comment.
 
-Click the bulb (Code OSS Gemini bulb), and then select Gemini: Generate code.
+5. Select the comment lines, including the blank line below the comment.
+
+6. Click the bulb (Code OSS Gemini bulb), and then select Gemini: Generate code.
 
 Gemini generates a function for the GET operation that returns a list of items from the inventory.py file. The function generally looks similar to this:
 
+```python
 @app.route('/inventory', methods=['GET'])
 def inventory_list():
     """Return a list of inventory items in JSON format."""
     return jsonify(inventory)
-Copied!
-Note: To learn more about the jsonify(inventory) function, highlight the term and prompt Gemini to explain the code to you.
-To accept the generated code, hold the pointer over any part of the generated code response, then click Accept.
+```
 
-Important: Gemini can generate more than one code snippet, and these snippets might differ from the snippet that is displayed above.
-If the app.route and return statements in your generated code is different from the code shown above, replace the generated code snippet with the snippet displayed above. This should ensure that the lab works as intended.
+> Note: To learn more about the jsonify(inventory) function, highlight the term and prompt Gemini to explain the code to you.
+
+7. To accept the generated code, hold the pointer over any part of the generated code response, then click Accept.
+
+> Important: Gemini can generate more than one code snippet, and these snippets might differ from the snippet that is displayed above.
+
+8. If the app.route and return statements in your generated code is different from the code shown above, replace the generated code snippet with the snippet displayed above. This should ensure that the lab works as intended.
+
+## Add the GET /inventory/{productID} method to the app
+
+Let's add another API method to return data about a specific inventory item, given its product ID. If the product ID is not found, the API returns the standard HTTP status code of 404.
+
+1. Add a few blank lines following the /inventory route.
+
+2. To let Gemini generate the code for this second API method, in the app.py file, enter the following comment:
+
+```python
+# Generate an App route to get a product from the list of inventory items given the productID.
+# Use the GET method.
+# If there is an invalid productID, return a 404 error with an error message in the JSON.
+```
+
+3. Select the 3 comment lines and the blank line that follows the comment, click the bulb (Code OSS Gemini bulb), and then select Gemini: Generate code.
+
+Gemini generates a function for the GET operation that returns the item from the inventory file whose productID is provided in the request, or the 404 status code if the product does not exist.
+
+```python
+@app.route('/inventory/<productid>', methods=['GET'])
+def inventory_item(productid):
+    """Return a single inventory item in JSON format."""
+    for item in inventory:
+        if item['productid'] == productid:
+            return jsonify(item)
+    return jsonify({'error': 'Product not found'}), 404
+```
+
+4. Hold the pointer over any part of the generated code response. To accept the generated code, in the toolbar, click Accept.
+
+5. If the generated code is different from the code shown above, replace the generated code snippet with the snippet displayed above.
+
+Your app.py file should now look similar to this:
+
+```python
+ """
+ A sample Hello World server.
+ """
+ import os
+
+ from flask import Flask, render_template, jsonify
+ from inventory import inventory
+
+ # pylint: disable=C0103
+ app = Flask(__name__)
+ # Generate an app route to display a list of inventory items in the JSON format from the inventory.py file.
+ # Use the GET method.
+ @app.route('/inventory', methods=['GET'])
+ def inventory_list():
+     """Return a list of inventory items in JSON format."""
+     return jsonify(inventory)
 
 
+ # Generate an App route to get a product from the list of inventory items given the productID.
+ # Use the GET method.
+ # If there is an invalid productID, return a 404 error with an error message in the JSON.
+ @app.route('/inventory/<productid>', methods=['GET'])
+ def inventory_item(productid):
+     """Return a single inventory item in JSON format."""
+     for item in inventory:
+         if item['productid'] == productid:
+             return jsonify(item)
+     return jsonify({'error': 'Product not found'}), 404
+
+     @app.route('/')
+     def hello():
+     """Return a friendly HTTP greeting."""
+     message = "It's running!"
+
+     """Get Cloud Run environment variables."""
+     service = os.environ.get('K_SERVICE', 'Unknown service')
+     revision = os.environ.get('K_REVISION', 'Unknown revision')
+
+     return render_template('index.html',
+         message=message,
+         Service=service,
+         Revision=revision)
+
+ if __name__ == '__main__':
+     server_port = os.environ.get('PORT', '8080')
+     app.run(debug=False, port=server_port, host='0.0.0.0')
+ </productid>
+```
+
+## Rebuild and redeploy the app locally
+You can run your app locally from your IDE using the Cloud Run emulator. In this case, locally means on the workstation machine.
+
+1. In the activity bar of your IDE, click Cloud Code (Code OSS Cloud Code menu).
+
+2. In the Cloud Run activity bar, click Run App on Local Cloud Run Emulator (Cloud Run - run on local emulator).
+
+3. When prompted at the top of the screen to Enable minikube gcp-auth addon to access Google APIs, select Yes.
+
+Wait for the build and deploy to complete.
+
+4. Hold the pointer over the link to the hello-world service at the localhost URL, and click Follow link.
+
+A new tab is opened in the browser that displays a page indicating that the service is running.
+
+## Test the API methods
+
+1. Follow the steps in the earlier task to run the app locally.
+
+2. After following the localhost URL link to view the running app in a separate browser tab, add /inventory to the end of the URL in the same tab and press Enter.
+
+The API returns a JSON response that contains the list of products from the inventory.py file. The JSON response should resemble this:
+
+```json
+[{"onhandqty":"100","productid":"12345"},{"onhandqty":"50","productid":"67890"},{"onhandqty":"25","productid":"11122"}]
+```
+3. Append /{productID} to the URL that ends with /inventory, where {productID} is a product ID in your inventory.
+
+For the example above, the end of a valid URL would be /inventory/12345.
+
+4. Note this product ID, as it will be used in later steps.
+
+5. Type Enter.
+
+The API returns a JSON response that contains data about the specific product.
+
+> Note: If the product was not returned successfully, replace the product ID route with the example code from the lab, and rebuild the app.
+
+6. In the URL, replace the product ID with XXXXX and type Enter.
+
+7. The URL should now end with /inventory/XXXXX.
+
+8. XXXXX is not a valid product ID, so the API returns a JSON error response indicating that the product is not found.
+
+# Task 7. Deploy the app to Cloud Run
+
+You can now deploy the app to Cloud Run on Google Cloud.
+
+1. In the activity bar main menu (Code OSS main menu), click View > Command Palette.
+
+2. In the command palette field, type Cloud Code Deploy, and then select Cloud Code: Deploy to Cloud Run from the list.
+
+3. To enable the Cloud Run API for your project, click Enable API.
+
+4. On the Service Settings page, for Region, select us-central1.
+
+5. Leave the remaining settings as their defaults, and then click Deploy.
+
+Cloud Code builds your image, pushes it to the registry, and deploys your service to Cloud Run. This may take a few minutes.
+
+> Note: To see the detailed logs for the deployment, click Show Detailed Logs.
+
+6. To view your running service, open the URL that is displayed in the Deploy to Cloud Run dialog.
+
+7. Test your service by appending the /inventory, and /inventory/{productID} paths to the URL, and verify the response.
+
+> Note: For the product URL, use the same product ID you used before. The end of the URL should resemble /inventory/12345.
+
+8. To get the URL for the Cloud Run service inventory page, in Cloud Shell, run the following command:
+
+```bash
+export SVC_URL=$(gcloud run services describe hello-world \
+  --project qwiklabs-gcp-00-c7eaf2bb4a1c \
+  --region us-central1 \
+  --platform managed \
+  --format='value(status.url)')
+echo ${SVC_URL}/inventory
+``` 
+
+<hr>
+
+# Congratulations!
+In this lab you learned how to:
+
+* Explore various Google services that you can use to deploy an app by asking Gemini context-based questions.
+* Prompt Gemini to provide templates that you can use to develop a basic app in Cloud Run.
+* Create, explore, and modify the app by using Gemini to explain and generate the code.
+* Run and test the app locally, and then deploy it to Google Cloud by using Gemini to generate the steps.
