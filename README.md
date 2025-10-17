@@ -98,3 +98,20 @@ GOOGLE_CLOUD_PROJECT="your-project-id"
 GOOGLE_CLOUD_LOCATION="your-location" #e.g. us-central1
 GOOGLE_GENAI_USE_VERTEXAI="True"
 ```
+
+<hr>
+<hr>
+
+# Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+Feel free to contribute by:
+
+* Adding new agent types
+* Improving existing implementations
+* Adding more examples and use cases
+* Enhancing documentation
+
+<hr>
+<hr>
