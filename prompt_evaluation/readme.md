@@ -93,7 +93,8 @@ def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
         "max_tokens": 1000,
         "messages": messages,
         "temperature": temperature,
-        "stop_sequences": stop_sequences,
+        # if stop_sequences is provided, the model will stop generating tokens when it encounters any of the stop sequences
+        # "stop_sequences": stop_sequences,
     }
     if system:
         params["system"] = system
