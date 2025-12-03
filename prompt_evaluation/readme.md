@@ -75,8 +75,8 @@ Example output:
 * Focus on tasks that do not require writing much code
 
 Please generate 3 objects.
-"""
 
+```python
     messages = []
     add_user_message(messages, prompt)
     add_assistant_message(messages, "```json")
