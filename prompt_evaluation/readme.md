@@ -28,7 +28,7 @@ Since we're generating test data, this is a perfect opportunity to use a **faste
 
 ## Generating Test Data with Code
 
-### Helper Functions
+### Helper Functions:
 ```python
 def add_user_message(messages, text):
     user_message = {"role": "user", "content": text}
@@ -56,7 +56,8 @@ def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
     return response.content[0].text
 ```
 
-### Dataset Generation Function
+### Dataset Generation Function:
+
 ```python
 def generate_dataset():
     prompt = """
@@ -106,7 +107,7 @@ def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
 
 To properly parse the JSON response, we prefill the assistant with `````json```` and add a stop sequence of ````` ``` ````` so the model stops at the end of the JSON block. This reliably yields valid JSON that can be parsed.
 
-### Test the Dataset Generation
+### Test the Dataset Generation:
 
 ```python
 dataset = generate_dataset()
@@ -115,7 +116,8 @@ print(dataset)
 
 This should return three different test cases covering our target outputs: Python functions, JSON configurations, and regular expressions for AWS-specific tasks.
 
-### Save the Dataset
+### Save the Dataset:
+
 ```python
 import json
 
