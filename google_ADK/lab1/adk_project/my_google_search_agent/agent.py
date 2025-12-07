@@ -24,5 +24,6 @@ root_agent = Agent(
 
     # tools: functions to enhance the model's capabilities.
     # Add the google_search tool below.
+    tools = [google_search]
 
 )
